@@ -6,3 +6,24 @@ body {
 a {
   color: #00B7FF;
 }
+
+.logo {
+    background-image: url(../images/magic_logo.png);
+    background-color: #ccc;
+    background-size: contain;
+    height: 128px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.navbar {
+    position: static;
+}
+
+.banner {
+    background-color: #ccc; 
+    height: 128px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
