@@ -3,6 +3,16 @@
         "controler": "index"
     },
     "GET/users": {
+        
         "controler": "users"
+    },
+    "GET/login": {
+        "controler": "login"
+    },
+    "GET/admin": {
+        "controler": "admin"
+    },
+    "GET/extensions": {
+        "controler": "extensions"
     }
 }

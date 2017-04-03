@@ -10,11 +10,22 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Sequelize = require('sequelize');
 var hbs = require('hbs');
+var mongoose = require('mongoose');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+//var index = require('./routes/index');
+//var users = require('./routes/users');
 
 var app = express();
+
+mongoose.connect("mongodb://localhost/projet_m");
+
+//test connection db mongoose
+mongoose.connection.on("error", function(){
+    console.log("erreur lors de la connection à la base de données");
+});
+mongoose.connection.on("open", function(){
+    console.log("connexion à la base de données OK");
+});
 
 GLOBAL.sequelize = new Sequelize('postgredb', 'minibras', 'motdepasse', {
     host: 'localhost',
@@ -24,6 +35,14 @@ GLOBAL.sequelize = new Sequelize('postgredb', 'minibras', 'motdepasse', {
 
 
 GLOBAL.actions_json = JSON.parse(fs.readFileSync("./routes/config_actions.json", 'utf8'));
+
+var schemadb_json = JSON.parse(fs.readFileSync("./database_schema.json", 'utf8'));
+
+//création des modèles mongoose
+GLOBAL.schemas = {};
+for (var schema in schemadb_json) {
+    GLOBAL.schemas[schema] = mongoose.model(schema, schemadb_json[schema].schema, schemadb_json[schema].collection);
+}
 
 
 hbs.registerPartials(__dirname + '/views/partials', function () {
@@ -67,7 +86,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ 
     cookieName:   'sessiongreta',
-     secret:   'AsipfGjdp*%dsDKNFNFKqoeID1345' 
+     secret:   'glyiglib575jj,jksdfgs69' 
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -110,7 +129,7 @@ passport.use(new LocalStrategy(
 ));
 app.post('/authenticated',  passport.authenticate('local'),  function  (req,  res)  {    
     if  (req.session.passport.user  !=  null)  {        
-        res.redirect('/index');  //le user est authentifié on affiche l’index il est en session
+        res.redirect('/admin');  //le user est authentifié on affiche l’index il est en session
             
     } 
     else  {        
@@ -122,8 +141,8 @@ app.post('/authenticated',  passport.authenticate('local'),  function  (req, 
 require('./dynamicRouter')(app);
 
 
-app.use('/', index);
-app.use('/users', users);
+//app.use('/', index);
+//app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

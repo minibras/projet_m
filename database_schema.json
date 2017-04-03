@@ -1,0 +1,9 @@
+{
+    "Users": {
+        "collection": "users",
+        "schema": {
+            "login": "String",
+            "mdp": "String"
+        }
+    }
+}
